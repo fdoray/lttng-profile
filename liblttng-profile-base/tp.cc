@@ -17,4 +17,4 @@
  */
 #define TRACEPOINT_DEFINE
 #define TRACEPOINT_CREATE_PROBES
-#include "lttng-profile/tp.h"
+#include "liblttng-profile-base/tp.h"

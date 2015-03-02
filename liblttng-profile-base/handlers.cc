@@ -15,13 +15,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "lttng-profile/handlers.h"
+#include "liblttng-profile-base/handlers.h"
 
 #include <atomic>
 
-#include "lttng-profile/stacktrace.h"
-#include "lttng-profile/time.h"
-#include "lttng-profile/tp.h"
+#include "liblttng-profile-base/get_monotonic_time.h"
+#include "liblttng-profile-base/stacktrace.h"
+#include "liblttng-profile-base/tp.h"
 
 namespace lttng_profile
 {

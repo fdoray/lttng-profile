@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "lttng-profile/profiler.h"
+#include <lttng_profile.h>
 
 #include <atomic>
 #include <iostream>
@@ -25,15 +25,12 @@
 #define UNW_LOCAL_ONLY
 #include <libunwind.h>
 
-#include "lttng-profile/handlers.h"
-#include "lttng-profile/profiling_timer.h"
+#include "liblttng-profile-base/handlers.h"
+#include "liblttng-profile-base/profiling_timer.h"
 
 extern "C" {
-#include "lttng-profile/module_api.h"
+#include "liblttng-profile-base/module_api.h"
 }
-
-namespace lttng_profile
-{
 
 namespace
 {
@@ -47,13 +44,14 @@ const long kMinSyscallDuration = 100000; // 0.1 ms
 
 }  // namespace
 
-Profiler::Profiler()
+void StartLttngProfile()
 {
   // Use thread-local storage for libunwind caches, in order to avoid locks.
   unw_set_caching_policy(unw_local_addr_space, UNW_CACHE_PER_THREAD);
 
   // Start profiling timer.
-  if (!StartProfilingTimer(kTimerPeriod, &OnCpuHandler))
+  if (!lttng_profile::StartProfilingTimer(
+          kTimerPeriod, &lttng_profile::OnCpuHandler))
   {
     std::cerr << "LTTng-profile: "
               << "Unable to start profiling timer. "
@@ -64,7 +62,7 @@ Profiler::Profiler()
   lttngprofile_module_config config;
   config.signo = SIGUSR1;
   config.latency_threshold = kMinSyscallDuration;
-  config.callback = &OffCpuHandler;
+  config.callback = &lttng_profile::OffCpuHandler;
 
   if (lttngprofile_module_register(&config) != 0)
   {
@@ -74,15 +72,3 @@ Profiler::Profiler()
               << std::endl;
   }
 }
-
-Profiler::~Profiler()
-{
-}
-
-namespace
-{
-// Initialize the profiler when the library is loaded.
-Profiler profiler;
-}  // namespace
-
-}  // namespace lttng_profile

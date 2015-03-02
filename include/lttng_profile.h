@@ -15,35 +15,17 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "lttng-profile/profiling_timer.h"
+#ifndef LTTNG_PROFILE_LTTNG_PROFILE_H_
+#define LTTNG_PROFILE_LTTNG_PROFILE_H_
 
-#include <string.h>
-#include <sys/time.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-namespace lttng_profile
-{
+void StartLttngProfile();
 
-bool StartProfilingTimer(long period, ProfilingTimerCallback callback)
-{
-  // Register a SIGPROF signal handler. 
-  struct sigaction sa;
-  memset(&sa, 0, sizeof(sa));
-  sa.sa_sigaction = callback;
-  sa.sa_flags = SA_RESTART | SA_SIGINFO;
-  sigemptyset(&sa.sa_mask);
-  if (sigaction(SIGPROF, &sa, NULL) != 0)
-    return false;
-
-  // Start profiling timer.
-  struct itimerval timer;
-  timer.it_interval.tv_sec = 0;
-  timer.it_interval.tv_usec = period;
-  timer.it_value = timer.it_interval;
-
-  if (setitimer(ITIMER_PROF, &timer, NULL) != 0)
-    return false;
-
-  return true;
+#ifdef __cplusplus
 }
+#endif
 
-}  // namespace lttng_profile
+#endif  // LTTNG_PROFILE_LTTNG_PROFILE_H_

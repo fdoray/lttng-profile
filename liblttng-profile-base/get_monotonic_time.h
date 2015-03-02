@@ -15,21 +15,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#ifndef LTTNG_PROFILE_PROFILER_H_
-#define LTTNG_PROFILE_PROFILER_H_
+#ifndef LTTNG_PROFILE_GET_MONOTONIC_TIME_H_
+#define LTTNG_PROFILE_GET_MONOTONIC_TIME_H_
 
-namespace lttng_profile
+#include <stdint.h>
+#include <time.h>
+
+static __inline__
+uint64_t GetMonotonicTime()
 {
+    struct timespec ts;
 
-class Profiler
-{
-public:
-  Profiler();
-  ~Profiler();
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return ((uint64_t) ts.tv_sec * 1000000000ULL) + ts.tv_nsec;
+}
 
-private:
-};
-
-}  // namespace lttng_profile
-
-#endif  // LTTNG_PROFILE_PROFILER_H_
+#endif  // LTTNG_PROFILE_GET_MONOTONIC_TIME_H_

@@ -1,3 +1,5 @@
 ACLOCAL_AMFLAGS = -I config
 
-SUBDIRS = src
+SUBDIRS = include liblttng-profile-base liblttng-profile
+
+

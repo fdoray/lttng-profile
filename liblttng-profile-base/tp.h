@@ -19,7 +19,7 @@
 #define TRACEPOINT_PROVIDER lttng_profile
 
 #undef TRACEPOINT_INCLUDE_FILE
-#define TRACEPOINT_INCLUDE_FILE lttng-profile/tp.h
+#define TRACEPOINT_INCLUDE_FILE liblttng-profile-base/tp.h
 
 #if !defined(LTTNG_PROFILE_TP_H_) || defined(TRACEPOINT_HEADER_MULTI_READ)
 #define LTTNG_PROFILE_TP_H_

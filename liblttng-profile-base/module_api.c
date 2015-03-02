@@ -23,9 +23,9 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 
-#include "lttng-profile/module_api.h"
-#include "lttng-profile/module_abi.h"
-#include "lttng-profile/memory.h"
+#include "liblttng-profile-base/module_api.h"
+#include "liblttng-profile-base/module_abi.h"
+#include "liblttng-profile-base/memory.h"
 
 struct lttngprofile_module_state {
   int registered;

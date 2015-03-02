@@ -40,7 +40,9 @@ AC_CHECK_HEADERS([sys/time.h], , [AC_MSG_ERROR([couldn't find header sys/time.h]
 
 AC_CONFIG_FILES([
     Makefile \
-    src/Makefile
+    include/Makefile \
+    liblttng-profile-base/Makefile \
+    liblttng-profile/Makefile
 ])
 
 AC_OUTPUT
