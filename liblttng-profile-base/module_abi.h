@@ -33,7 +33,6 @@ enum lttngprofile_module_cmd {
  */
 struct lttngprofile_module_msg {
   int cmd;                 /* Command */
-  int signo;               /* Signal sent to a thread after a long syscall. */
   long latency_threshold;  /* Latency threshold to identify long syscalls. */
 } __attribute__((packed));
 

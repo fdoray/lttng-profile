@@ -17,24 +17,14 @@
  */
 #include "liblttng-profile-base/profiling_timer.h"
 
-#include <string.h>
+#include <stddef.h>
 #include <sys/time.h>
 
 namespace lttng_profile
 {
 
-bool StartProfilingTimer(long period, ProfilingTimerCallback callback)
+bool StartProfilingTimer(long period)
 {
-  // Register a SIGPROF signal handler. 
-  struct sigaction sa;
-  memset(&sa, 0, sizeof(sa));
-  sa.sa_sigaction = callback;
-  sa.sa_flags = SA_RESTART | SA_SIGINFO;
-  sigemptyset(&sa.sa_mask);
-  if (sigaction(SIGPROF, &sa, NULL) != 0)
-    return false;
-
-  // Start profiling timer.
   struct itimerval timer;
   timer.it_interval.tv_sec = 0;
   timer.it_interval.tv_usec = period;

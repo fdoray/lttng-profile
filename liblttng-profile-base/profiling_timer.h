@@ -23,9 +23,7 @@
 namespace lttng_profile
 {
 
-typedef void (*ProfilingTimerCallback)(int, siginfo_t*, void *);
-
-bool StartProfilingTimer(long period, ProfilingTimerCallback callback);
+bool StartProfilingTimer(long period);
 
 }  // namespace lttng_profile
 

@@ -23,18 +23,6 @@
 #include <signal.h>
 
 /*
- * lttng-profile module configuration
- */
-struct lttngprofile_module_config {
-    /* Signal sent to a thread after a long syscall. */
-    int signo;
-    /* Latency threshold to identify long syscalls. */
-    long latency_threshold;
-    /* Signal handler. */
-    void (*callback)(void* context);
-};
-
-/*
  * Test if the lttng-profile module is enabled.
  *
  * Return: 1 if initialized, 0 otherwise
@@ -43,20 +31,16 @@ int lttngprofile_module_registered();
 
 /*
  * Register the current process (and all its threads) to the lttng-profile
- * module. If already registered, then it resets the configuration. Open
- * the required file descriptor and install the signal handler.
+ * module. If already registered, then it resets the configuration.
  *
  * The signal handler may be called before this function returns. Therefore,
  * any required setup must be performed prior to registration.
  *
- * Supported signals are SIGUSR1 and SIGUSR2.
- *
- * @config: pointer to struct lttngprofile configuration
+ * @latency_threshold: Latency threshold to identify long syscalls.
  *
  * Return: 0 in case of success, error code otherwise
  */
-int lttngprofile_module_register(
-    struct lttngprofile_module_config* config);
+int lttngprofile_module_register(long latency_threshold);
 
 /*
  * Unregister the calling process from the lttng-profile module. The

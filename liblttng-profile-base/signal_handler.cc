@@ -15,9 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "liblttng-profile-base/handlers.h"
-
-#include <atomic>
+#include "liblttng-profile-base/signal_handler.h"
 
 #include "liblttng-profile-base/get_monotonic_time.h"
 #include "liblttng-profile-base/stacktrace.h"
@@ -32,30 +30,10 @@ namespace
 // Maximum stack size to capture.
 const size_t kMaxStackSize = 60;
 
-// Indicates whether we are in a signal handler.
-thread_local std::atomic_bool is_handling_signal(false);
-
-bool CanExecuteHandler()
-{
-  bool expected = false;
-  return is_handling_signal.compare_exchange_strong(
-      expected, true,
-      std::memory_order_relaxed,
-      std::memory_order_relaxed);
-}
-
-void DidExecuteHandler()
-{
-  is_handling_signal.store(false, std::memory_order_relaxed);
-}
-
 }  // namespace
 
-void OnCpuHandler(int sig_nr, siginfo_t* info, void* context)
+void SignalHandler(int sig_nr, siginfo_t* info, void* context)
 {
-  if (!CanExecuteHandler())
-    return;
-
   uint64_t start = GetMonotonicTime();
 
   void* buffer[kMaxStackSize];
@@ -63,34 +41,22 @@ void OnCpuHandler(int sig_nr, siginfo_t* info, void* context)
 
   uint64_t overhead = GetMonotonicTime() - start;
 
-  tracepoint(lttng_profile,
-             on_cpu_sample,
-             size,
-             buffer,
-             overhead);
-
-  DidExecuteHandler();
-}
-
-void OffCpuHandler(void* context)
-{
-  if (!CanExecuteHandler())
-    return;
-
-  uint64_t start = GetMonotonicTime();
-
-  void* buffer[kMaxStackSize];
-  size_t size = StackTrace(buffer, kMaxStackSize, context);
-
-  uint64_t overhead = GetMonotonicTime() - start;
-
-  tracepoint(lttng_profile,
-             off_cpu_sample,
-             size,
-             buffer,
-             overhead);
-
-  DidExecuteHandler();
+  if (info->si_code == SI_USER)
+  {
+    tracepoint(lttng_profile,
+               off_cpu_sample,
+               size,
+               buffer,
+               overhead);
+  }
+  else
+  {
+    tracepoint(lttng_profile,
+               on_cpu_sample,
+               size,
+               buffer,
+               overhead);
+  }
 }
 
 }  // namespace lttng_profile

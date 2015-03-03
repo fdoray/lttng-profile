@@ -23,12 +23,8 @@
 namespace lttng_profile
 {
 
-// This is called at a regular period on each thread. Time is not incremented
-// when the thread is not running.
-void OnCpuHandler(int sig_nr, siginfo_t* info, void* context);
-
-// This is called after a long system call.
-void OffCpuHandler(void* context);
+// This is called when a stack trace event must be generated.
+void SignalHandler(int sig_nr, siginfo_t* info, void* context);
 
 }  // namespace lttng_profile
 

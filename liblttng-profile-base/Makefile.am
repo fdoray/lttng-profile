@@ -5,8 +5,6 @@ AM_CXXFLAGS = -std=c++11 -fno-omit-frame-pointer
 lib_LTLIBRARIES = liblttng-profile-base.la
 
 liblttng_profile_base_la_SOURCES = \
-    handlers.cc \
-    handlers.h \
     lttng_profile.cc \
     memory.h \
     module_abi.h \
@@ -14,6 +12,8 @@ liblttng_profile_base_la_SOURCES = \
     module_api.h \
     profiling_timer.cc \
     profiling_timer.h \
+    signal_handler.cc \
+    signal_handler.h \
     stacktrace.h \
     tp.cc \
     tp.h
