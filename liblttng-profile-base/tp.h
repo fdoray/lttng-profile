@@ -31,11 +31,10 @@
 TRACEPOINT_EVENT(
     lttng_profile,
     on_cpu_sample,
-    TP_ARGS(size_t, size,
-            void*, stack,
+    TP_ARGS(const char*, stack,
             uint64_t, overhead),
     TP_FIELDS(
-        ctf_sequence(void*, stack, stack, size_t, size)
+        ctf_string(stack, stack)
         ctf_integer(uint64_t, overhead, overhead)
     )
 )
@@ -46,11 +45,10 @@ TRACEPOINT_LOGLEVEL(lttng_profile, on_cpu_sample,
 TRACEPOINT_EVENT(
     lttng_profile,
     off_cpu_sample,
-    TP_ARGS(size_t, size,
-            void*, stack,
+    TP_ARGS(const char*, stack,
             uint64_t, overhead),
     TP_FIELDS(
-        ctf_sequence(void*, stack, stack, size_t, size)
+        ctf_string(stack, stack)
         ctf_integer(uint64_t, overhead, overhead)
     )
 )

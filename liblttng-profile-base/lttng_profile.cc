@@ -80,6 +80,7 @@ void StartLttngProfile()
     return;
   }
 
+  /*
   // Start profiling timer.
   if (!lttng_profile::StartProfilingTimer(kTimerPeriod))
   {
@@ -87,6 +88,7 @@ void StartLttngProfile()
               << "Unable to start profiling timer. "
               << "No CPU profiling events will be generated." << std::endl;
   }
+  */
 
   // Start sched kernel module.
   if (lttngprofile_module_register(kMinSyscallDuration) != 0)
