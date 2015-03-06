@@ -17,7 +17,6 @@
  */
 #include <lttng_profile.h>
 
-#include <atomic>
 #include <iostream>
 #include <signal.h>
 #include <stddef.h>
