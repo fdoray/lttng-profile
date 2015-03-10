@@ -38,10 +38,6 @@ namespace
 // Profiling timer period (microseconds).
 const long kTimerPeriod = 1000;  // 1 ms
 
-// Minimum duration that a thread must spend in a system call in order to
-// generate an off_cpu_sample event (nanoseconds).
-const long kMinSyscallDuration = 100000; // 0.1 ms
-
 // Signal used by LTTng-profile.
 const int kSignal = SIGPROF;
 
@@ -91,7 +87,7 @@ void StartLttngProfile()
   */
 
   // Start sched kernel module.
-  if (lttngprofile_module_register(kMinSyscallDuration) != 0)
+  if (syscall_tracker_module_register() != 0)
   {
     std::cerr << "LTTng-profile: "
               << "Unable to communicate with the kernel module. "

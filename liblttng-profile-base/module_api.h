@@ -23,31 +23,29 @@
 #include <signal.h>
 
 /*
- * Test if the lttng-profile module is enabled.
+ * Test if the process is registered with the kernel module.
  *
  * Return: 1 if initialized, 0 otherwise
  */
-int lttngprofile_module_registered();
+int syscall_tracker_module_registered();
 
 /*
- * Register the current process (and all its threads) to the lttng-profile
+ * Register the current process (and all its threads) to the kernel
  * module. If already registered, then it resets the configuration.
  *
  * The signal handler may be called before this function returns. Therefore,
  * any required setup must be performed prior to registration.
  *
- * @latency_threshold: Latency threshold to identify long syscalls.
- *
  * Return: 0 in case of success, error code otherwise
  */
-int lttngprofile_module_register(long latency_threshold);
+int syscall_tracker_module_register();
 
 /*
- * Unregister the calling process from the lttng-profile module. The
+ * Unregister the calling process from the kernel module. The
  * previous signal handler is restored.
  *
  * Return: 0 in case of success, error code otherwise
  */
-int lttngprofile_module_unregister();
+int syscall_tracker_module_unregister();
 
 #endif  // LTTNG_PROFILE_MODULE_API_H_

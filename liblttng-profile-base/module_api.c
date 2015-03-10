@@ -27,40 +27,38 @@
 #include "liblttng-profile-base/module_abi.h"
 #include "liblttng-profile-base/memory.h"
 
-struct lttngprofile_module_state {
+struct syscall_tracker_module_state {
   int registered;
   FILE* fd;
 };
 
-static struct lttngprofile_module_state* state = NULL;
+static struct syscall_tracker_module_state* state = NULL;
 
-static int lttngprofile_module_ioctl(
-    long latency_threshold, int cmd)
+static int syscall_tracker_module_ioctl(int cmd)
 {
-  struct lttngprofile_module_msg info;
+  struct syscall_tracker_module_msg info;
 
   if (!(state && state->fd))
     return -1;
   info.cmd = cmd;
-  info.latency_threshold = latency_threshold;
-  return ioctl(state->fd->_fileno, LTTNGPROFILE_MODULE_IOCTL, &info);
+  return ioctl(state->fd->_fileno, SYSCALLS_TRACKER_IOCTL, &info);
 }
 
 /*
  * API functions
  */
-int lttngprofile_module_registered()
+int syscall_tracker_module_registered()
 {
   return (state && state->registered);
 }
 
-int lttngprofile_module_register(long latency_threshold)
+int syscall_tracker_module_register(long latency_threshold)
 {
   int ret = 0;
 
   /* if initialized, then reset configuration */
-  if (lttngprofile_module_registered()) {
-    lttngprofile_module_unregister();
+  if (syscall_tracker_module_registered()) {
+    syscall_tracker_module_unregister();
   }
   state = calloc(1, sizeof(*state));
   if (!state) {
@@ -68,15 +66,15 @@ int lttngprofile_module_register(long latency_threshold)
   }
 
   /* open ioctl fd */
-  state->fd = fopen(LTTNGPROFILE_PATH, "rw");
+  state->fd = fopen(SYSCALL_TRACKER_PATH, "rw");
   if (!state->fd) {
     ret = -ENOENT;
     goto error_fd;
   }
 
   /* install signal handler before registration */
-  ret = lttngprofile_module_ioctl(
-      latency_threshold, LTTNGPROFILE_MODULE_REGISTER);
+  ret = syscall_tracker_module_ioctl(
+      SYSCALL_TRACKER_MODULE_REGISTER);
   if (ret != 0)
     goto error_ioctl;
   state->registered = 1;
@@ -89,12 +87,12 @@ error_fd:
   return ret;
 }
 
-int lttngprofile_module_unregister()
+int syscall_tracker_module_unregister()
 {
   int ret = 0;
-  if (lttngprofile_module_registered()) {
-    ret = lttngprofile_module_ioctl(
-        0, LTTNGPROFILE_MODULE_UNREGISTER);
+  if (syscall_tracker_module_registered()) {
+    ret = syscall_tracker_module_ioctl(
+        SYSCALL_TRACKER_MODULE_UNREGISTER);
     fclose(state->fd);
     FREE(state);
   }

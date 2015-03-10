@@ -59,7 +59,7 @@ void SignalHandler(int sig_nr, siginfo_t* info, void* context)
 
   free(symbols);
 
-  // Emit the event.
+  // Generate the event.
   uint64_t overhead = GetMonotonicTime() - start;
 
   if (info->si_code == SI_USER)

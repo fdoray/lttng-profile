@@ -19,26 +19,27 @@
  */
 #ifndef LTTNG_PROFILE_MODULE_ABI_H_
 #define LTTNG_PROFILE_MODULE_ABI_H_
+#define SYSCALLS_TRACKER_PROC "syscalls"
+#define SYSCALLS_TRACKER_PATH "/proc/" SYSCALLS_TRACKER_PROC
 
-#define LTTNGPROFILE_PROC "lttngprofile"
-#define LTTNGPROFILE_PATH "/proc/" LTTNGPROFILE_PROC
+#define SYSCALL_TRACKER_PROC "syscalls"
+#define SYSCALL_TRACKER_PATH "/proc/" SYSCALLS_TRACKER_PROC
 
-enum lttngprofile_module_cmd {
-  LTTNGPROFILE_MODULE_REGISTER = 0,
-  LTTNGPROFILE_MODULE_UNREGISTER = 1,  
+enum syscall_module_cmd {
+  SYSCALL_TRACKER_MODULE_REGISTER = 0,
+  SYSCALL_TRACKER_MODULE_UNREGISTER = 1,
 };
 
 /*
  * Structure to send messages to the kernel module.
  */
-struct lttngprofile_module_msg {
+struct syscall_tracker_module_msg {
   int cmd;                 /* Command */
-  long latency_threshold;  /* Latency threshold to identify long syscalls. */
 } __attribute__((packed));
 
 /*
  * Borrow some unused range of LTTng ioctl ;-).
  */
-#define LTTNGPROFILE_MODULE_IOCTL  _IO(0xF6, 0x90)
+#define SYSCALLS_TRACKER_IOCTL  _IO(0xF6, 0x90)
 
 #endif  // LTTNG_PROFILE_MODULE_ABI_H_
