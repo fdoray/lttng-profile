@@ -91,10 +91,18 @@ int syscall_tracker_module_unregister()
 {
   int ret = 0;
   if (syscall_tracker_module_registered()) {
-    ret = syscall_tracker_module_ioctl(
-        SYSCALL_TRACKER_MODULE_UNREGISTER);
+    ret = syscall_tracker_module_ioctl(SYSCALL_TRACKER_MODULE_UNREGISTER);
     fclose(state->fd);
     FREE(state);
+  }
+  return ret;
+}
+
+int syscall_tracker_module_stack()
+{
+  int ret = 0;
+  if (syscall_tracker_module_registered()) {
+    ret = syscall_tracker_module_ioctl(SYSCALL_TRACKER_MODULE_STACK);
   }
   return ret;
 }

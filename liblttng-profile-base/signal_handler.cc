@@ -21,6 +21,7 @@
 #include <execinfo.h>
 
 #include "liblttng-profile-base/get_monotonic_time.h"
+#include "liblttng-profile-base/module_api.h"
 #include "liblttng-profile-base/stacktrace.h"
 #include "liblttng-profile-base/tp.h"
 
@@ -68,6 +69,8 @@ void SignalHandler(int sig_nr, siginfo_t* info, void* context)
                off_cpu_sample,
                symbols_string,
                overhead);
+
+    syscall_tracker_module_stack();
   }
   else
   {

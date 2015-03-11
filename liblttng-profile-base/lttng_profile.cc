@@ -25,12 +25,9 @@
 #define UNW_LOCAL_ONLY
 #include <libunwind.h>
 
+#include "liblttng-profile-base/module_api.h"
 #include "liblttng-profile-base/profiling_timer.h"
 #include "liblttng-profile-base/signal_handler.h"
-
-extern "C" {
-#include "liblttng-profile-base/module_api.h"
-}
 
 namespace
 {

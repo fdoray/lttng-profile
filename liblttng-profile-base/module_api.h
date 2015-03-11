@@ -22,6 +22,10 @@
 
 #include <signal.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Test if the process is registered with the kernel module.
  *
@@ -47,5 +51,17 @@ int syscall_tracker_module_register();
  * Return: 0 in case of success, error code otherwise
  */
 int syscall_tracker_module_unregister();
+
+/*
+ * Notifies the kernel module that an userspace stack event was generated
+ * for a system call.
+ *
+ * Return: 0 in case of success, error code otherwise
+ */
+int syscall_tracker_module_stack();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // LTTNG_PROFILE_MODULE_API_H_
