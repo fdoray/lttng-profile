@@ -29,6 +29,7 @@ namespace lttng_profile
 
 inline size_t StackTrace(void** stack, size_t size, void* context)
 {
+  /*
   unw_context_t unwind_context =
     *(static_cast<unw_context_t *>(const_cast<void *>(context)));
 
@@ -50,6 +51,8 @@ inline size_t StackTrace(void** stack, size_t size, void* context)
   }
 
   return i;
+  */
+  return unw_backtrace(stack, size);
 }
 
 }  // namespace lttng_profile
