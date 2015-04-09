@@ -88,6 +88,7 @@ void StartLttngProfile()
               << "No CPU profiling events will be generated." << std::endl;
   }
 
+  /*
   // Start sched kernel module.
   if (lttngprofile_module_register(kMinSyscallDuration) != 0)
   {
@@ -96,4 +97,5 @@ void StartLttngProfile()
               << "No stack trace events will be generated on long syscalls."
               << std::endl;
   }
+  */
 }
