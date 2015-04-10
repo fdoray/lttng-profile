@@ -68,6 +68,7 @@ bool InstallSignalHandler()
 
 void StartLttngProfile()
 {
+  /*
   // Use thread-local storage for libunwind caches, in order to avoid locks.
   unw_set_caching_policy(unw_local_addr_space, UNW_CACHE_PER_THREAD);
 
@@ -96,4 +97,5 @@ void StartLttngProfile()
               << "No stack trace events will be generated on long syscalls."
               << std::endl;
   }
+  */
 }
